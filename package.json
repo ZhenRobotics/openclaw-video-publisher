@@ -1,0 +1,70 @@
+{
+  "name": "openclaw-video-publisher",
+  "version": "1.0.0",
+  "description": "Multi-platform video publishing tool - Upload videos to Douyin, Kuaishou, WeChat Channels, Bilibili, YouTube, TikTok and more",
+  "main": "src/index.ts",
+  "bin": {
+    "video-publish": "./publish.sh",
+    "vp": "./publish.sh"
+  },
+  "scripts": {
+    "start": "tsx src/cli/index.ts",
+    "dev": "tsx watch src/cli/index.ts",
+    "build": "tsc",
+    "test": "node tests/test-all.sh",
+    "test:douyin": "tsx tests/test-douyin.ts",
+    "test:kuaishou": "tsx tests/test-kuaishou.ts"
+  },
+  "keywords": [
+    "video-publisher",
+    "douyin",
+    "kuaishou",
+    "wechat-channels",
+    "bilibili",
+    "youtube",
+    "tiktok",
+    "xiaohongshu",
+    "video-upload",
+    "multi-platform",
+    "openclaw"
+  ],
+  "author": "justin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZhenRobotics/openclaw-video-publisher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ZhenRobotics/openclaw-video-publisher/issues"
+  },
+  "homepage": "https://github.com/ZhenRobotics/openclaw-video-publisher#readme",
+  "dependencies": {
+    "axios": "^1.13.6",
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "dotenv": "^16.6.1",
+    "form-data": "^4.0.5",
+    "ora": "^5.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.13",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "src/",
+    "config/platforms.example.json",
+    "examples/",
+    "publish.sh",
+    "batch-publish.sh",
+    ".clawhub/",
+    "README.md",
+    "QUICKSTART.md",
+    "SKILL.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ]
+}
