@@ -1,81 +1,158 @@
 /**
- * OpenClaw Video Publisher - 核心类型定义
+ * Agent Audit Trail - Core Type Definitions
+ * Immutable Black Box for AI Decisions
  */
 
-export interface VideoFile {
-  path: string;
-  filename: string;
-  size: number;
-  duration?: number;
-  format?: string;
-}
+/**
+ * Single decision entry in the audit trail
+ */
+export interface DecisionEntry {
+  id: string;
+  timestamp: number;
+  agentId: string;
+  agentVersion: string;
 
-export interface VideoMetadata {
-  title: string;
-  description?: string;
-  tags?: string[];
-  cover?: string;
-  category?: string;
-  privacy?: 'public' | 'private' | 'unlisted';
-  scheduleTime?: Date;
-}
-
-export interface PlatformConfig {
-  enabled: boolean;
-  name: string;
-  api_base: string;
-  upload_endpoint: string;
-  max_file_size: number;
-  supported_formats: string[];
-  max_duration: number;
-  rate_limit: {
-    requests_per_hour: number;
-    requests_per_day: number;
+  // Decision context
+  input: {
+    prompt?: string;
+    context?: Record<string, any>;
+    parameters?: Record<string, any>;
   };
-}
 
-export interface PlatformCredentials {
-  [key: string]: string | undefined;
-}
-
-export interface PublishOptions {
-  video: VideoFile;
-  metadata: VideoMetadata;
-  platforms: string[];
-  retry?: boolean;
-  maxRetries?: number;
-}
-
-export interface PublishResult {
-  platform: string;
-  status: 'success' | 'failed' | 'pending';
-  videoId?: string;
-  url?: string;
-  error?: string;
-  retryCount?: number;
-  publishedAt?: Date;
-}
-
-export interface PublishHistory {
-  [videoPath: string]: {
-    title: string;
-    uploadedAt: string;
-    platforms: {
-      [platform: string]: PublishResult;
-    };
+  // Decision process
+  reasoning: {
+    steps: ReasoningStep[];
+    model?: string;
+    temperature?: number;
+    maxTokens?: number;
   };
+
+  // Decision output
+  output: {
+    decision: string;
+    confidence?: number;
+    alternatives?: Alternative[];
+    metadata?: Record<string, any>;
+  };
+
+  // Audit metadata
+  executionTime: number;
+  cost?: {
+    inputTokens: number;
+    outputTokens: number;
+    totalCost: number;
+  };
+
+  // Cryptographic chain
+  previousHash: string;
+  hash: string;
+  signature?: string;
 }
 
-export interface UploadProgress {
-  platform: string;
-  percent: number;
-  uploaded: number;
-  total: number;
-  status: string;
+/**
+ * Individual reasoning step
+ */
+export interface ReasoningStep {
+  step: number;
+  action: string;
+  thought: string;
+  observation?: string;
+  timestamp: number;
 }
 
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+/**
+ * Alternative decision considered
+ */
+export interface Alternative {
+  decision: string;
+  confidence: number;
+  reasoning: string;
+}
 
+/**
+ * Audit chain metadata
+ */
+export interface AuditChain {
+  chainId: string;
+  agentId: string;
+  createdAt: number;
+  lastUpdatedAt: number;
+  totalEntries: number;
+  verified: boolean;
+  genesisHash: string;
+  latestHash: string;
+}
+
+/**
+ * Query options for retrieving entries
+ */
+export interface QueryOptions {
+  agentId?: string;
+  chainId?: string;
+  startTime?: number;
+  endTime?: number;
+  limit?: number;
+  offset?: number;
+  includeVerification?: boolean;
+}
+
+/**
+ * Verification result
+ */
+export interface VerificationResult {
+  valid: boolean;
+  chainId: string;
+  totalEntries: number;
+  verifiedEntries: number;
+  brokenLinks: number[];
+  errors: string[];
+  verifiedAt: number;
+}
+
+/**
+ * Export format options
+ */
+export type ExportFormat = 'json' | 'csv' | 'html' | 'markdown';
+
+/**
+ * Export options
+ */
+export interface ExportOptions {
+  format: ExportFormat;
+  includeMetadata: boolean;
+  includeReasoning: boolean;
+  compressOutput?: boolean;
+}
+
+/**
+ * Storage backend interface
+ */
+export interface StorageBackend {
+  initialize(): Promise<void>;
+  saveEntry(entry: DecisionEntry): Promise<void>;
+  getEntry(id: string): Promise<DecisionEntry | null>;
+  getChain(chainId: string): Promise<DecisionEntry[]>;
+  queryEntries(options: QueryOptions): Promise<DecisionEntry[]>;
+  getChainMetadata(chainId: string): Promise<AuditChain | null>;
+  close(): Promise<void>;
+}
+
+/**
+ * Configuration
+ */
+export interface AuditConfig {
+  agentId: string;
+  agentVersion: string;
+  storageType: 'json' | 'sqlite' | 'postgres';
+  storagePath: string;
+  enableSignatures: boolean;
+  enableCompression: boolean;
+  autoVerify: boolean;
+}
+
+/**
+ * Logger interface
+ */
 export interface Logger {
   debug(message: string, ...args: any[]): void;
   info(message: string, ...args: any[]): void;

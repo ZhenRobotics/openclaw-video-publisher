@@ -1,273 +1,515 @@
-# 快速开始 - OpenClaw Video Publisher
+# Quick Start Guide - Agent Audit Trail
 
-**5 分钟快速上手多平台视频发布**
+**Get started with AI decision tracking in 5 minutes**
 
 ---
 
-## 📦 安装
+## Installation
 
-### 方式 1: npm 全局安装
-
-```bash
-npm install -g openclaw-video-publisher
-```
-
-### 方式 2: 克隆项目
+### Option 1: Clone Repository
 
 ```bash
-git clone https://github.com/ZhenRobotics/openclaw-video-publisher.git
-cd openclaw-video-publisher
+git clone https://github.com/ZhenRobotics/openclaw-agent-audit-trail.git
+cd openclaw-agent-audit-trail
 npm install
+npm link  # Make CLI globally available
+```
+
+### Option 2: NPM (Coming Soon)
+
+```bash
+npm install -g agent-audit-trail
 ```
 
 ---
 
-## ⚙️ 配置
+## First Steps
 
-### 1. 复制配置模板
+### 1. Initialize Your Audit Trail
 
 ```bash
-# 复制平台配置
-cp config/platforms.example.json config/platforms.json
+# Create audit trail for your agent
+audit-trail init --agent-id my-first-agent --version 1.0.0
 
-# 复制环境变量
-cp .env.example .env
+# Output:
+# ✓ Audit trail initialized successfully!
+# Configuration:
+#   Agent ID: my-first-agent
+#   Version: 1.0.0
+#   Storage: ./audit-data
 ```
 
-### 2. 配置平台凭证
+This creates:
+- `./audit-data/` directory
+- `./audit-data/chains/` for decision chains
+- `./audit-data/metadata.json` for chain metadata
 
-编辑 `.env` 文件，填入至少一个平台的 API 凭证：
+### 2. Record Your First Decision
 
 ```bash
-# 抖音
-DOUYIN_CLIENT_KEY=your-client-key
-DOUYIN_CLIENT_SECRET=your-client-secret
-DOUYIN_ACCESS_TOKEN=your-access-token
+audit-trail record \
+  --prompt "What is the capital of France?" \
+  --decision "Paris" \
+  --reasoning "Based on geographic knowledge"
 
-# 快手
-KUAISHOU_APP_ID=your-app-id
-KUAISHOU_APP_SECRET=your-app-secret
-KUAISHOU_ACCESS_TOKEN=your-access-token
+# Output:
+# ✓ Decision recorded!
+# Entry Details:
+#   ID: entry_1234567890_abc
+#   Hash: fedcba098765...
+#   Timestamp: 2024-03-10T10:00:00Z
 ```
 
-**获取凭证方法**：
-- 抖音：https://open.douyin.com/
-- 快手：https://open.kuaishou.com/
-- 详细步骤见 [README.md](README.md#获取平台凭证)
-
----
-
-## 🚀 发布第一个视频
-
-### 单个平台发布
+### 3. Verify Integrity
 
 ```bash
-./publish.sh upload \
-  --video my-video.mp4 \
-  --title "我的第一个视频" \
-  --description "测试发布" \
-  --platforms "douyin"
+audit-trail verify
+
+# Output:
+# ✓ Audit trail verified successfully!
+# ✓ Chain integrity intact
+#   Total entries: 1
+#   Verified: 1
 ```
 
-### 多平台同时发布
+### 4. List Decisions
 
 ```bash
-./publish.sh upload \
-  --video my-video.mp4 \
-  --title "多平台发布测试" \
-  --tags "测试,短视频" \
-  --platforms "douyin,kuaishou,bilibili"
-```
+audit-trail list
 
-### 带封面和重试
-
-```bash
-./publish.sh upload \
-  --video my-video.mp4 \
-  --title "带封面的视频" \
-  --cover cover.jpg \
-  --platforms "douyin,kuaishou" \
-  --retry \
-  --max-retries 3
+# Output:
+# Audit Trail Entries (1):
+#
+# 1. Entry entry_1234567890_abc
+#    Timestamp: 2024-03-10T10:00:00Z
+#    Input: What is the capital of France?
+#    Decision: Paris
+#    Hash: fedcba098765...
 ```
 
 ---
 
-## 📝 常用命令
+## Common Workflows
 
-### 查看可用平台
-
-```bash
-./publish.sh platforms
-```
-
-输出示例：
-```
-🌍 可用平台:
-  ✅ douyin
-  ✅ kuaishou
-```
-
-### 查看发布历史
+### Simple Q&A Agent
 
 ```bash
-./publish.sh list
+# Record multiple decisions
+audit-trail record --prompt "2+2?" --decision "4" --reasoning "Math"
+audit-trail record --prompt "Sky color?" --decision "blue" --reasoning "Visual"
+audit-trail record --prompt "Water temp?" --decision "cold" --reasoning "Sensory"
+
+# List all decisions
+audit-trail list --limit 10
 ```
 
-### 批量发布
+### Financial Decision Agent
 
-创建配置文件 `my-batch.json`:
+```bash
+# Record with context
+audit-trail record \
+  --agent-id finance-bot \
+  --prompt "Approve loan #12345" \
+  --decision "approved" \
+  --reasoning "Credit score 750, income verified, debt ratio 0.3"
 
-```json
-{
-  "videos": [
+# Verify chain
+audit-trail verify --agent-id finance-bot
+```
+
+### Content Moderation Agent
+
+```bash
+# Initialize separate agent
+audit-trail init --agent-id content-moderator --version 1.0.0
+
+# Record moderation decisions
+audit-trail record \
+  --agent-id content-moderator \
+  --prompt "Review comment: 'Great product!'" \
+  --decision "approved" \
+  --reasoning "No policy violations detected"
+
+# Export for reporting
+audit-trail export \
+  --agent-id content-moderator \
+  --output moderation-report.html \
+  --format html
+```
+
+---
+
+## Programmatic Usage
+
+### Basic Example
+
+Create `example.ts`:
+
+```typescript
+import { AgentAuditTrail } from './src/core/audit-trail';
+
+async function main() {
+  // Initialize
+  const trail = new AgentAuditTrail({
+    agentId: 'my-agent',
+    agentVersion: '1.0.0',
+    storagePath: './audit-data'
+  });
+
+  await trail.initialize();
+
+  // Record a decision
+  const entry = await trail.recordSimple(
+    'Should I send notification?',
+    'yes',
+    'User preference is enabled and event is important',
+    150
+  );
+
+  console.log('Recorded:', entry.id);
+
+  // Verify
+  const verification = trail.verify();
+  console.log('Valid:', verification.valid);
+
+  await trail.close();
+}
+
+main();
+```
+
+Run it:
+
+```bash
+npx tsx example.ts
+```
+
+### Advanced Example
+
+```typescript
+import { AgentAuditTrail } from './src/core/audit-trail';
+
+async function main() {
+  const trail = new AgentAuditTrail({
+    agentId: 'advanced-agent',
+    agentVersion: '2.0.0'
+  });
+
+  await trail.initialize();
+
+  // Record detailed decision
+  const entry = await trail.recordDecision(
+    // Input
     {
-      "path": "video1.mp4",
-      "title": "视频1",
-      "platforms": ["douyin", "kuaishou"]
+      prompt: 'Classify image #789',
+      context: { imageUrl: 'https://...', userId: 'user123' },
+      parameters: { confidence_threshold: 0.8 }
     },
+    // Reasoning
     {
-      "path": "video2.mp4",
-      "title": "视频2",
-      "platforms": ["bilibili"]
+      steps: [
+        {
+          step: 1,
+          action: 'preprocess',
+          thought: 'Resize image to 224x224',
+          timestamp: Date.now()
+        },
+        {
+          step: 2,
+          action: 'inference',
+          thought: 'Run through CNN model',
+          observation: 'Detected: cat (95%), dog (3%), bird (2%)',
+          timestamp: Date.now()
+        },
+        {
+          step: 3,
+          action: 'decide',
+          thought: 'Confidence above threshold, selecting cat',
+          timestamp: Date.now()
+        }
+      ],
+      model: 'resnet50',
+      temperature: 0.0
+    },
+    // Output
+    {
+      decision: 'cat',
+      confidence: 0.95,
+      alternatives: [
+        { decision: 'dog', confidence: 0.03, reasoning: 'Low confidence' },
+        { decision: 'bird', confidence: 0.02, reasoning: 'Very low confidence' }
+      ],
+      metadata: { processingTime: '120ms', imageSize: '1024x768' }
+    },
+    // Execution time
+    120,
+    // Cost
+    {
+      inputTokens: 0,
+      outputTokens: 0,
+      totalCost: 0.001
     }
-  ]
+  );
+
+  console.log('Decision recorded:', entry.id);
+  console.log('Hash:', entry.hash.substring(0, 16) + '...');
+
+  // Query recent decisions
+  const recent = await trail.query({
+    limit: 5,
+    startTime: Date.now() - 3600000 // Last hour
+  });
+
+  console.log(`Found ${recent.length} recent decisions`);
+
+  // Export as JSON
+  const jsonExport = await trail.export({
+    format: 'json',
+    includeMetadata: true,
+    includeReasoning: true
+  });
+
+  console.log('Export ready');
+
+  await trail.close();
 }
-```
 
-执行批量发布：
-
-```bash
-./batch-publish.sh my-batch.json
+main();
 ```
 
 ---
 
-## 🎯 使用场景
+## Configuration
 
-### 场景 1: 自媒体创作者
+### Environment Variables
+
+Create `.env`:
 
 ```bash
-# 每天发布一个视频到所有平台
-./publish.sh upload \
-  --video daily-video.mp4 \
-  --title "每日内容" \
-  --platforms "douyin,kuaishou,weixin,bilibili"
+# Agent settings
+AGENT_ID=my-agent
+AGENT_VERSION=1.0.0
+
+# Storage
+STORAGE_PATH=./audit-data
+STORAGE_TYPE=json
+
+# Features
+AUTO_VERIFY=true
 ```
 
-### 场景 2: 企业营销
+Then use:
 
 ```bash
-# 产品宣传视频，定向投放
-./publish.sh upload \
-  --video product-ad.mp4 \
-  --title "新品上市" \
-  --description "限时优惠" \
-  --tags "产品,促销,新品" \
-  --platforms "douyin,kuaishou"
+audit-trail record --prompt "Test" --decision "OK" --reasoning "Using env config"
 ```
 
-### 场景 3: 内容工作室
+### Multiple Agents
+
+Track different agents separately:
 
 ```bash
-# 为客户批量发布视频
-./batch-publish.sh client-videos.json
+# Agent 1: Financial decisions
+audit-trail init --agent-id finance-bot --storage ./data/finance
+
+# Agent 2: Content moderation
+audit-trail init --agent-id moderator --storage ./data/moderation
+
+# Agent 3: Image classification
+audit-trail init --agent-id vision --storage ./data/vision
+
+# Record to specific agent
+audit-trail record \
+  --agent-id finance-bot \
+  --storage ./data/finance \
+  --prompt "Approve?" \
+  --decision "yes"
 ```
 
 ---
 
-## 🔧 故障排查
+## Export & Reporting
 
-### 问题 1: 配置文件不存在
+### JSON Export
 
 ```bash
-❌ 配置文件不存在: config/platforms.json
-💡 提示: cp config/platforms.example.json config/platforms.json
+audit-trail export --output report.json --format json
 ```
 
-**解决方案**：
-```bash
-cp config/platforms.example.json config/platforms.json
-```
-
-### 问题 2: API 凭证无效
-
-```
-❌ douyin: 平台验证失败: Invalid access_token
-```
-
-**解决方案**：
-1. 检查 `.env` 文件中的凭证是否正确
-2. 访问平台开放平台刷新 token
-3. 重新获取 access_token
-
-### 问题 3: 视频上传失败
-
-```
-❌ douyin: 文件大小超过限制 256MB
-```
-
-**解决方案**：
-- 压缩视频文件
-- 检查平台文件大小限制（见 `config/platforms.json`）
-
----
-
-## 📊 配置说明
-
-### 平台配置 (config/platforms.json)
-
-每个平台的配置包括：
-
+Output structure:
 ```json
 {
-  "douyin": {
-    "enabled": true,              // 是否启用
-    "name": "抖音",               // 平台名称
-    "api_base": "...",            // API 地址
-    "max_file_size": 268435456,   // 最大文件大小 (256MB)
-    "supported_formats": ["mp4"], // 支持的格式
-    "max_duration": 300,          // 最大时长（秒）
-    "rate_limit": {               // 频率限制
-      "requests_per_hour": 100
-    }
-  }
+  "metadata": {
+    "chainId": "chain_my-agent_1234567890_abc",
+    "agentId": "my-agent",
+    "totalEntries": 42
+  },
+  "verification": {
+    "valid": true,
+    "verifiedEntries": 42
+  },
+  "entries": [...]
 }
 ```
 
-### 环境变量 (.env)
+### HTML Report
 
 ```bash
-# 默认平台
-DEFAULT_PLATFORMS=douyin,kuaishou
+audit-trail export \
+  --output report.html \
+  --format html \
+  --include-reasoning
+```
 
-# 自动重试
-AUTO_RETRY=true
-MAX_RETRY=3
+Creates a formatted HTML page with:
+- Chain metadata
+- Verification status
+- All decision entries
+- Reasoning details (if enabled)
 
-# 日志级别
-LOG_LEVEL=info
+### CSV Export
+
+```bash
+audit-trail export --output data.csv --format csv
+```
+
+Columns: ID, Timestamp, Agent ID, Input, Decision, Confidence, Execution Time, Hash
+
+### Markdown Export
+
+```bash
+audit-trail export --output report.md --format markdown
+```
+
+Creates a markdown document suitable for documentation or GitHub.
+
+---
+
+## Verification
+
+### Manual Verification
+
+```bash
+audit-trail verify
+```
+
+### Scheduled Verification
+
+Use cron or system scheduler:
+
+```bash
+# Check integrity every hour
+0 * * * * /usr/local/bin/audit-trail verify --agent-id my-agent
+```
+
+### Programmatic Verification
+
+```typescript
+const verification = trail.verify();
+
+if (!verification.valid) {
+  console.error('ALERT: Chain integrity compromised!');
+  console.error('Broken links:', verification.brokenLinks);
+  console.error('Errors:', verification.errors);
+
+  // Send alert, log to monitoring system, etc.
+}
 ```
 
 ---
 
-## 📚 更多资源
+## Tips & Best Practices
 
-- **完整文档**: [README.md](README.md)
-- **API 文档**: [docs/API.md](docs/API.md)
-- **平台指南**: [docs/PLATFORMS.md](docs/PLATFORMS.md)
-- **问题反馈**: https://github.com/ZhenRobotics/openclaw-video-publisher/issues
+### 1. Use Descriptive Agent IDs
+
+```bash
+# Good
+audit-trail init --agent-id loan-approval-prod-v2
+
+# Avoid
+audit-trail init --agent-id agent1
+```
+
+### 2. Include Context in Reasoning
+
+```bash
+# Good
+--reasoning "Approved based on credit score 750, income $80k, DTI 0.3"
+
+# Less useful
+--reasoning "Looks good"
+```
+
+### 3. Regular Exports
+
+```bash
+# Daily backup script
+#!/bin/bash
+DATE=$(date +%Y-%m-%d)
+audit-trail export --output "backups/audit-$DATE.json" --format json
+```
+
+### 4. Monitor Integrity
+
+```bash
+# Add to monitoring
+if ! audit-trail verify; then
+  echo "ALERT: Audit trail integrity check failed!"
+  # Send notification
+fi
+```
 
 ---
 
-## 🎉 下一步
+## Troubleshooting
 
-1. ✅ 配置完成，开始发布视频
-2. 📖 阅读 [README.md](README.md) 了解更多功能
-3. 🔧 添加更多平台凭证
-4. 📊 查看发布历史和统计
-5. 🚀 自动化你的视频发布流程
+### Issue: "Audit trail not initialized"
+
+**Solution**: Run `audit-trail init` first
+
+```bash
+audit-trail init --agent-id my-agent
+```
+
+### Issue: Storage path doesn't exist
+
+**Solution**: Specify or create storage path
+
+```bash
+mkdir -p ./custom-path
+audit-trail init --storage ./custom-path
+```
+
+### Issue: Verification fails
+
+**Cause**: Chain may be corrupted or tampered with
+
+**Solution**: Check errors
+
+```bash
+audit-trail verify --agent-id my-agent
+# Review error messages
+```
+
+### Issue: Cannot find audit-trail command
+
+**Solution**: Link the package
+
+```bash
+cd openclaw-agent-audit-trail
+npm link
+```
 
 ---
 
-**就是这么简单！开始用 AI 发布你的视频吧！** ✨🚀
+## Next Steps
+
+1. **Integrate into your app**: Use programmatic API
+2. **Set up monitoring**: Verify chain integrity regularly
+3. **Create dashboards**: Export and visualize decisions
+4. **Ensure compliance**: Use audit trails for regulatory requirements
+5. **Experiment**: Try different export formats and queries
+
+---
+
+**Ready to build transparent AI? Start tracking decisions now!**

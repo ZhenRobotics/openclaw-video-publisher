@@ -1,401 +1,535 @@
-# OpenClaw Video Publisher 🚀
+# Agent Audit Trail
 
-**一键发布短视频到多个平台** - 自动化视频发布工具
+**The Immutable Black Box for AI Decisions**
 
-支持抖音、快手、视频号、B站、小红书、YouTube、TikTok 等主流平台的批量发布。
-
----
-
-## ✨ 核心功能
-
-- 🎯 **多平台发布** - 一次上传，同步到 7+ 个平台
-- 🔐 **统一授权管理** - 安全的 API 凭证配置
-- 📝 **内容管理** - 标题、描述、标签、封面统一设置
-- ⏰ **定时发布** - 支持预约发布时间
-- 📊 **发布记录** - 追踪发布状态，保存平台链接
-- 🔄 **失败重试** - 自动重试失败的发布任务
-- 🎨 **批量操作** - 支持批量上传多个视频
+Track, audit, and verify AI agent decisions with cryptographic guarantees. An open-source solution for AI transparency, accountability, and compliance.
 
 ---
 
-## 🌍 支持的平台
+## Why Agent Audit Trail?
 
-| 平台 | 状态 | 说明 |
-|------|------|------|
-| 抖音 (Douyin) | ✅ | 开放平台 API |
-| 快手 (Kuaishou) | ✅ | 开放平台 API |
-| 视频号 (WeChat Channels) | ✅ | 企业微信 API |
-| 哔哩哔哩 (Bilibili) | ✅ | 创作中心 API |
-| 小红书 (Xiaohongshu) | ⏳ | API 申请中 |
-| YouTube | ✅ | Google API |
-| TikTok | ✅ | TikTok for Developers |
+As AI agents become more autonomous and make critical decisions, we need a way to:
+
+- **Track every decision** an AI agent makes
+- **Verify integrity** with cryptographic proof
+- **Ensure compliance** with regulatory requirements
+- **Debug failures** by replaying decision chains
+- **Build trust** through transparency
+
+Agent Audit Trail provides an immutable, tamper-proof record of AI decision-making processes.
 
 ---
 
-## 🚀 快速开始
+## Core Features
 
-### 1. 安装
+### Immutability
+- **Cryptographic chain**: Each decision entry is cryptographically linked to the previous one
+- **Tamper detection**: Any modification to historical records is immediately detectable
+- **Hash-based verification**: SHA-256 hashing ensures data integrity
+
+### Comprehensive Tracking
+- **Input capture**: Record prompts, context, and parameters
+- **Reasoning steps**: Track the agent's decision-making process
+- **Output recording**: Store decisions, confidence levels, and alternatives
+- **Cost tracking**: Monitor token usage and API costs
+
+### Flexibility
+- **Multiple storage backends**: JSON files, SQLite, PostgreSQL (coming soon)
+- **Export formats**: JSON, CSV, HTML, Markdown
+- **Query API**: Filter and search historical decisions
+- **CLI and programmatic access**: Use via command line or integrate into your code
+
+### Verification
+- **Chain integrity checks**: Verify the entire decision chain hasn't been tampered with
+- **Automatic verification**: Optional auto-verify on each write
+- **Audit reports**: Generate compliance-ready audit reports
+
+---
+
+## Quick Start
+
+### Installation
 
 ```bash
-# 通过 npm 安装
-npm install -g openclaw-video-publisher
+# Clone the repository
+git clone https://github.com/ZhenRobotics/openclaw-agent-audit-trail.git
+cd openclaw-agent-audit-trail
 
-# 或者克隆项目
-git clone https://github.com/ZhenRobotics/openclaw-video-publisher.git
-cd openclaw-video-publisher
+# Install dependencies
 npm install
+
+# Make CLI accessible
+npm link
 ```
 
-### 2. 配置平台凭证
+### Initialize Audit Trail
 
 ```bash
-# 复制配置模板
-cp config/platforms.example.json config/platforms.json
-cp .env.example .env
+# Initialize for your agent
+audit-trail init --agent-id my-ai-agent --version 1.0.0
 
-# 编辑配置文件，填入各平台的 API 凭证
-nano config/platforms.json
+# Or use short alias
+aat init --agent-id my-ai-agent
 ```
 
-### 3. 发布视频
+### Record Decisions
 
 ```bash
-# 发布单个视频到所有平台
-./publish.sh my-video.mp4 \
-  --title "我的视频标题" \
-  --description "视频描述" \
-  --tags "AI,技术,教程"
+# Record a simple decision
+audit-trail record \
+  --prompt "Should I approve this transaction?" \
+  --decision "Approved" \
+  --reasoning "Transaction amount is within limits and user is verified"
 
-# 发布到指定平台
-./publish.sh my-video.mp4 \
-  --platforms "douyin,kuaishou,weixin" \
-  --title "我的视频"
-
-# 批量发布
-./batch-publish.sh videos/*.mp4 \
-  --config publish-config.json
+# Record with more details
+audit-trail record \
+  --prompt "Classify this image" \
+  --decision "cat" \
+  --reasoning "Detected feline features with 95% confidence" \
+  --agent-id vision-classifier
 ```
 
----
-
-## 📖 使用指南
-
-### 单个视频发布
+### Verify Integrity
 
 ```bash
-video-publish upload \
-  --video /path/to/video.mp4 \
-  --title "视频标题" \
-  --description "视频描述" \
-  --tags "标签1,标签2,标签3" \
-  --cover /path/to/cover.jpg \
-  --platforms "douyin,kuaishou" \
-  --schedule "2024-12-25 18:00:00"
+# Verify the audit chain
+audit-trail verify
+
+# Expected output:
+# ✓ Chain integrity intact
+#   Total entries: 42
+#   Verified: 42
 ```
 
-### 批量发布
-
-创建配置文件 `publish-config.json`:
-
-```json
-{
-  "videos": [
-    {
-      "path": "video1.mp4",
-      "title": "视频1标题",
-      "description": "视频1描述",
-      "tags": ["AI", "技术"],
-      "platforms": ["douyin", "kuaishou"]
-    },
-    {
-      "path": "video2.mp4",
-      "title": "视频2标题",
-      "description": "视频2描述",
-      "tags": ["教程", "分享"],
-      "platforms": ["bilibili", "youtube"]
-    }
-  ]
-}
-```
-
-然后执行：
+### List Decisions
 
 ```bash
-video-publish batch --config publish-config.json
+# List recent decisions
+audit-trail list --limit 10
+
+# List with time filter
+audit-trail list --start 1700000000 --end 1700100000
 ```
 
-### 查看发布记录
+### Export Audit Trail
 
 ```bash
-# 查看所有发布记录
-video-publish list
+# Export as JSON
+audit-trail export --output audit-report.json --format json
 
-# 查看某个视频的发布状态
-video-publish status video1.mp4
+# Export as HTML report
+audit-trail export --output audit-report.html --format html --include-reasoning
 
-# 重试失败的发布
-video-publish retry video1.mp4
+# Export as CSV
+audit-trail export --output audit-data.csv --format csv
 ```
 
----
-
-## ⚙️ 配置说明
-
-### 平台配置 (config/platforms.json)
-
-```json
-{
-  "douyin": {
-    "enabled": true,
-    "client_key": "your-client-key",
-    "client_secret": "your-client-secret",
-    "access_token": "your-access-token"
-  },
-  "kuaishou": {
-    "enabled": true,
-    "app_id": "your-app-id",
-    "app_secret": "your-app-secret"
-  },
-  "weixin": {
-    "enabled": true,
-    "corp_id": "your-corp-id",
-    "corp_secret": "your-corp-secret"
-  },
-  "bilibili": {
-    "enabled": true,
-    "access_key": "your-access-key",
-    "secret_key": "your-secret-key",
-    "session_id": "your-session-id"
-  },
-  "youtube": {
-    "enabled": true,
-    "api_key": "your-api-key",
-    "client_id": "your-client-id",
-    "client_secret": "your-client-secret",
-    "refresh_token": "your-refresh-token"
-  }
-}
-```
-
-### 环境变量 (.env)
+### View Information
 
 ```bash
-# 默认发布平台（逗号分隔）
-DEFAULT_PLATFORMS=douyin,kuaishou,weixin
+# Show audit trail info
+audit-trail info
 
-# 是否自动重试失败的发布
-AUTO_RETRY=true
-
-# 重试次数
-MAX_RETRY=3
-
-# 日志级别
-LOG_LEVEL=info
+# Output:
+# Chain Metadata:
+#   Chain ID: chain_my-ai-agent_1234567890_abc
+#   Total Entries: 42
+#   Created: 2024-03-10T10:00:00Z
+#   Last Updated: 2024-03-10T15:30:00Z
 ```
 
 ---
 
-## 📁 项目结构
+## Programmatic Usage
 
-```
-openclaw-video-publisher/
-├── src/
-│   ├── core/
-│   │   ├── publisher.ts        # 核心发布逻辑
-│   │   ├── uploader.ts         # 视频上传管理
-│   │   └── scheduler.ts        # 定时任务管理
-│   ├── platforms/
-│   │   ├── douyin.ts           # 抖音适配器
-│   │   ├── kuaishou.ts         # 快手适配器
-│   │   ├── weixin.ts           # 视频号适配器
-│   │   ├── bilibili.ts         # B站适配器
-│   │   ├── youtube.ts          # YouTube适配器
-│   │   └── tiktok.ts           # TikTok适配器
-│   ├── utils/
-│   │   ├── logger.ts           # 日志工具
-│   │   ├── validator.ts        # 参数验证
-│   │   └── database.ts         # 发布记录存储
-│   └── cli/
-│       └── index.ts            # CLI 入口
-├── config/
-│   ├── platforms.json          # 平台配置（需创建）
-│   └── platforms.example.json  # 配置模板
-├── examples/
-│   ├── single-publish.sh       # 单个发布示例
-│   └── batch-publish.json      # 批量发布示例
-├── tests/
-│   ├── test-douyin.ts
-│   ├── test-kuaishou.ts
-│   └── test-all.sh
-├── publish.sh                  # 主入口脚本
-├── batch-publish.sh            # 批量发布脚本
-├── .env.example                # 环境变量模板
-├── package.json
-└── README.md
-```
-
----
-
-## 🔐 获取平台凭证
-
-### 抖音开放平台
-1. 访问 https://open.douyin.com/
-2. 创建应用 → 获取 `client_key` 和 `client_secret`
-3. 授权后获取 `access_token`
-
-### 快手开放平台
-1. 访问 https://open.kuaishou.com/
-2. 创建应用 → 获取 `app_id` 和 `app_secret`
-
-### 微信视频号
-1. 访问 https://channels.weixin.qq.com/
-2. 企业认证 → 获取 `corp_id` 和 `corp_secret`
-
-### 哔哩哔哩
-1. 访问 https://member.bilibili.com/
-2. 创作中心 → API 设置 → 获取凭证
-
-### YouTube
-1. 访问 https://console.cloud.google.com/
-2. 创建项目 → 启用 YouTube Data API v3
-3. 创建 OAuth 2.0 凭证
-
----
-
-## 🎯 使用场景
-
-### 自媒体创作者
-- 一次性发布视频到所有平台，节省时间
-- 统一管理内容，避免重复操作
-
-### 企业营销
-- 批量发布产品宣传视频
-- 定时发布营销内容
-
-### 视频剪辑工作室
-- 为客户自动分发视频到指定平台
-- 保存发布记录，方便对账
-
----
-
-## 📊 发布记录示例
-
-发布记录保存在 `data/publish-history.json`:
-
-```json
-{
-  "video1.mp4": {
-    "title": "我的视频",
-    "uploaded_at": "2024-03-10T10:00:00Z",
-    "platforms": {
-      "douyin": {
-        "status": "success",
-        "url": "https://www.douyin.com/video/1234567890",
-        "video_id": "1234567890"
-      },
-      "kuaishou": {
-        "status": "success",
-        "url": "https://www.kuaishou.com/short-video/1234567890"
-      },
-      "bilibili": {
-        "status": "failed",
-        "error": "Token expired",
-        "retry_count": 2
-      }
-    }
-  }
-}
-```
-
----
-
-## 🛠️ 开发指南
-
-### 添加新平台
-
-1. 创建平台适配器 `src/platforms/new-platform.ts`:
+### TypeScript/JavaScript
 
 ```typescript
-import { BasePlatform } from './base';
+import { AgentAuditTrail } from 'openclaw-agent-audit-trail';
 
-export class NewPlatform extends BasePlatform {
-  async upload(video: VideoFile, metadata: VideoMetadata) {
-    // 实现上传逻辑
-  }
+// Initialize
+const trail = new AgentAuditTrail({
+  agentId: 'my-ai-agent',
+  agentVersion: '1.0.0',
+  storagePath: './audit-data'
+});
 
-  async getStatus(videoId: string) {
-    // 查询视频状态
+await trail.initialize();
+
+// Record a decision
+const entry = await trail.recordDecision(
+  // Input
+  {
+    prompt: 'Should I send this email?',
+    context: { urgency: 'high', recipient: 'user@example.com' }
+  },
+  // Reasoning
+  {
+    steps: [
+      {
+        step: 1,
+        action: 'analyze',
+        thought: 'Checking email content for sensitive information',
+        timestamp: Date.now()
+      },
+      {
+        step: 2,
+        action: 'decide',
+        thought: 'No sensitive data detected, urgency is high',
+        timestamp: Date.now()
+      }
+    ],
+    model: 'gpt-4',
+    temperature: 0.7
+  },
+  // Output
+  {
+    decision: 'send',
+    confidence: 0.95,
+    alternatives: [
+      { decision: 'delay', confidence: 0.05, reasoning: 'Wait for manual review' }
+    ]
+  },
+  // Execution time
+  1250,
+  // Cost (optional)
+  {
+    inputTokens: 150,
+    outputTokens: 50,
+    totalCost: 0.003
   }
+);
+
+console.log(`Decision recorded: ${entry.id}`);
+
+// Query decisions
+const decisions = await trail.query({
+  startTime: Date.now() - 86400000, // Last 24 hours
+  limit: 100
+});
+
+// Verify integrity
+const verification = trail.verify();
+if (!verification.valid) {
+  console.error('Chain compromised!', verification.errors);
+}
+
+// Export
+const htmlReport = await trail.export({
+  format: 'html',
+  includeMetadata: true,
+  includeReasoning: true
+});
+
+await trail.close();
+```
+
+### Simple Helper
+
+```typescript
+// For simple use cases
+const entry = await trail.recordSimple(
+  'What is 2+2?',
+  '4',
+  'Basic arithmetic calculation',
+  50 // execution time in ms
+);
+```
+
+---
+
+## Use Cases
+
+### 1. AI Safety & Compliance
+
+**Scenario**: Financial institution using AI for loan approvals
+
+```typescript
+await trail.recordDecision(
+  {
+    prompt: 'Approve loan application #12345',
+    context: { creditScore: 720, income: 80000, debtRatio: 0.3 }
+  },
+  {
+    steps: [
+      { step: 1, action: 'evaluate', thought: 'Checking credit score threshold', timestamp: Date.now() },
+      { step: 2, action: 'analyze', thought: 'Debt-to-income ratio acceptable', timestamp: Date.now() },
+      { step: 3, action: 'decide', thought: 'All criteria met for approval', timestamp: Date.now() }
+    ]
+  },
+  {
+    decision: 'approved',
+    confidence: 0.92,
+    metadata: { loanAmount: 50000, interestRate: 0.045 }
+  },
+  2300
+);
+```
+
+**Benefits**: Full audit trail for regulatory compliance, ability to explain decisions to customers
+
+### 2. Autonomous Systems
+
+**Scenario**: Self-driving car decision logging
+
+```typescript
+await trail.recordDecision(
+  {
+    prompt: 'Pedestrian detected crossing street',
+    context: { speed: 35, distance: 50, weather: 'clear' }
+  },
+  {
+    steps: [
+      { step: 1, action: 'detect', thought: 'Pedestrian at 50m ahead', timestamp: Date.now() },
+      { step: 2, action: 'calculate', thought: 'Stopping distance: 35m', timestamp: Date.now() },
+      { step: 3, action: 'decide', thought: 'Initiate emergency brake', timestamp: Date.now() }
+    ]
+  },
+  {
+    decision: 'emergency_brake',
+    confidence: 1.0
+  },
+  120
+);
+```
+
+**Benefits**: Black box recording for accident investigation, safety analysis
+
+### 3. Content Moderation
+
+**Scenario**: AI moderating user-generated content
+
+```typescript
+await trail.recordDecision(
+  {
+    prompt: 'Moderate comment: "..."',
+    context: { userId: 'user123', platform: 'forum' }
+  },
+  {
+    steps: [
+      { step: 1, action: 'scan', thought: 'Checking for hate speech patterns', timestamp: Date.now() },
+      { step: 2, action: 'analyze', thought: 'Detected potential violation', timestamp: Date.now() },
+      { step: 3, action: 'decide', thought: 'Flagging for human review', timestamp: Date.now() }
+    ]
+  },
+  {
+    decision: 'flag_for_review',
+    confidence: 0.75,
+    metadata: { violationType: 'potential_hate_speech' }
+  },
+  850
+);
+```
+
+**Benefits**: Transparency for users, evidence for policy enforcement
+
+### 4. Research & Development
+
+**Scenario**: Debugging AI agent behavior
+
+```bash
+# Find all failed decisions
+audit-trail list --limit 100 | grep "failed"
+
+# Export last week's decisions for analysis
+audit-trail export --output weekly-decisions.json \
+  --start $(date -d '7 days ago' +%s) \
+  --format json --include-reasoning
+
+# Verify no tampering occurred
+audit-trail verify
+```
+
+**Benefits**: Reproducible experiments, decision pattern analysis
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────┐
+│           CLI / API Layer               │
+│   (User Interface & Integration)        │
+└──────────────┬──────────────────────────┘
+               │
+┌──────────────▼──────────────────────────┐
+│      AgentAuditTrail (Main API)         │
+│  - Record decisions                     │
+│  - Query & export                       │
+│  - Verification                         │
+└──────────────┬──────────────────────────┘
+               │
+    ┌──────────┴──────────┐
+    │                     │
+┌───▼──────────┐  ┌──────▼─────────┐
+│ AuditChain   │  │ Storage Layer  │
+│              │  │                │
+│ - Hash chain │  │ - JSON files   │
+│ - Integrity  │  │ - SQLite       │
+│ - Verify     │  │ - PostgreSQL   │
+└──────────────┘  └────────────────┘
+```
+
+### Key Components
+
+#### 1. AuditTrailChain
+- Manages cryptographic chain
+- Creates and links entries
+- Verifies integrity
+
+#### 2. Storage Backends
+- **JSONStorage**: File-based storage (default)
+- **SQLiteStorage**: Coming soon
+- **PostgresStorage**: Coming soon
+
+#### 3. CLI
+- Command-line interface
+- Easy integration with scripts and automation
+
+---
+
+## Configuration
+
+### Environment Variables
+
+Create a `.env` file:
+
+```bash
+# Agent configuration
+AGENT_ID=my-ai-agent
+AGENT_VERSION=1.0.0
+
+# Storage
+STORAGE_PATH=./audit-data
+STORAGE_TYPE=json
+
+# Options
+AUTO_VERIFY=true
+ENABLE_SIGNATURES=false
+ENABLE_COMPRESSION=false
+```
+
+### Programmatic Configuration
+
+```typescript
+const trail = new AgentAuditTrail({
+  agentId: 'my-agent',
+  agentVersion: '2.0.0',
+  storageType: 'json',
+  storagePath: './custom-path',
+  enableSignatures: false,
+  enableCompression: false,
+  autoVerify: true
+});
+```
+
+---
+
+## Data Format
+
+### Decision Entry Structure
+
+```json
+{
+  "id": "entry_1234567890_abc",
+  "timestamp": 1234567890000,
+  "agentId": "my-ai-agent",
+  "agentVersion": "1.0.0",
+  "input": {
+    "prompt": "Should I approve this?",
+    "context": { "user": "john", "amount": 100 },
+    "parameters": { "threshold": 0.8 }
+  },
+  "reasoning": {
+    "steps": [
+      {
+        "step": 1,
+        "action": "analyze",
+        "thought": "Checking approval criteria",
+        "timestamp": 1234567890100
+      }
+    ],
+    "model": "gpt-4",
+    "temperature": 0.7
+  },
+  "output": {
+    "decision": "approved",
+    "confidence": 0.95,
+    "alternatives": [
+      {
+        "decision": "reject",
+        "confidence": 0.05,
+        "reasoning": "Amount slightly high"
+      }
+    ]
+  },
+  "executionTime": 1250,
+  "cost": {
+    "inputTokens": 150,
+    "outputTokens": 50,
+    "totalCost": 0.003
+  },
+  "previousHash": "abcdef1234567890...",
+  "hash": "fedcba0987654321..."
 }
 ```
 
-2. 在 `src/core/publisher.ts` 中注册平台
-3. 添加配置示例到 `config/platforms.example.json`
-4. 编写测试用例
+---
+
+## Security
+
+### Cryptographic Guarantees
+
+- **SHA-256 hashing**: Industry-standard cryptographic hash
+- **Chain linking**: Each entry references previous entry's hash
+- **Tamper detection**: Any modification breaks the chain
+- **Genesis hash**: Unique chain identifier
+
+### Best Practices
+
+1. **Backup regularly**: Export and store audit trails securely
+2. **Verify periodically**: Run verification checks on schedule
+3. **Secure storage**: Protect audit data with appropriate permissions
+4. **Monitor integrity**: Set up alerts for verification failures
 
 ---
 
-## ⚠️ 注意事项
+## Roadmap
 
-1. **API 限流**: 各平台都有 API 调用限制，建议控制发布频率
-2. **内容审核**: 部分平台需要内容审核，发布后不会立即上线
-3. **凭证安全**: 不要将 `config/platforms.json` 和 `.env` 提交到 Git
-4. **视频格式**: 建议使用 MP4 格式，分辨率 1080x1920 (竖屏)
-5. **文件大小**: 注意各平台的文件大小限制
+### v1.1 (Coming Soon)
+- [ ] SQLite storage backend
+- [ ] PostgreSQL storage backend
+- [ ] Digital signatures for entries
+- [ ] Compression support
+- [ ] Web dashboard
 
----
-
-## 🐛 故障排查
-
-### 上传失败
-```bash
-# 检查网络连接
-curl -I https://open.douyin.com
-
-# 验证凭证有效性
-video-publish test --platform douyin
-
-# 查看详细日志
-LOG_LEVEL=debug video-publish upload video.mp4
-```
-
-### Token 过期
-```bash
-# 刷新 token
-video-publish refresh-token --platform douyin
-```
+### v1.2 (Future)
+- [ ] Blockchain integration (Ethereum, Hyperledger)
+- [ ] Real-time streaming API
+- [ ] Advanced analytics
+- [ ] Multi-agent support
+- [ ] Distributed audit trails
 
 ---
 
-## 📝 更新日志
+## Contributing
 
-### v1.0.0 (2024-03-10)
-- ✨ 初始版本
-- ✅ 支持抖音、快手、视频号、B站、YouTube、TikTok
-- ✅ 单个和批量发布
-- ✅ 发布记录管理
-- ✅ 失败重试机制
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
-## 🤝 贡献
+## License
 
-欢迎提交 Issue 和 Pull Request！
-
----
-
-## 📄 许可证
-
-MIT License
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🔗 相关链接
+## Support
 
-- **GitHub**: https://github.com/ZhenRobotics/openclaw-video-publisher
-- **文档**: https://github.com/ZhenRobotics/openclaw-video-publisher/wiki
-- **问题反馈**: https://github.com/ZhenRobotics/openclaw-video-publisher/issues
+- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
+- **Documentation**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/wiki
+- **Email**: support@zhenrobotics.com
 
 ---
 
-**用 AI 发布视频，让内容触达更多人！** ✨🚀
+**Built with transparency in mind. Make AI decisions auditable and trustworthy.**

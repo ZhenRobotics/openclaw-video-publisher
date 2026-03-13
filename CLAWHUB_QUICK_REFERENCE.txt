@@ -1,0 +1,128 @@
+================================================================================
+ClawHub 上传快速参考 / ClawHub Upload Quick Reference
+================================================================================
+
+项目 / Project: Agent Audit Trail
+版本 / Version: 1.0.0
+日期 / Date: 2026-03-13
+
+================================================================================
+上传地址 / Upload URL
+================================================================================
+
+https://clawhub.ai/upload
+
+================================================================================
+文件位置 / File Location
+================================================================================
+
+文件夹 / Folder: clawhub-upload/
+压缩包 / Zip:    clawhub-upload.zip
+
+包含文件 / Contains:
+  ✅ skill.md   (中英双语, ~15KB, 484行)
+  ✅ readme.md  (中英双语, ~17KB, 581行)
+
+================================================================================
+Skill 信息 / Skill Information
+================================================================================
+
+Skill Name:    agent-audit-trail
+Display Name:  Agent Audit Trail
+Author:        ZhenStaff
+Category:      AI Tools
+Version:       1.0.0
+
+Description (中文):
+  AI决策的不可篡改黑匣子 - 追踪、审计和验证AI Agent决策，提供密码学保证
+
+Description (English):
+  The Immutable Black Box for AI Decisions - Track, audit, and verify AI
+  agent decisions with cryptographic guarantees
+
+Tags:
+  ai-audit, agent-tracking, decision-trail, immutable-log, ai-transparency,
+  audit-trail, cryptographic-verification, ai-governance, ai-accountability
+
+================================================================================
+安装命令 / Installation Command
+================================================================================
+
+clawhub install agent-audit-trail
+
+或 / Or:
+
+clawhub install ZhenStaff/agent-audit-trail
+
+================================================================================
+相关链接 / Related Links
+================================================================================
+
+GitHub:   https://github.com/ZhenRobotics/openclaw-agent-audit-trail
+NPM:      https://www.npmjs.com/package/openclaw-agent-audit-trail
+ClawHub:  https://clawhub.ai/ZhenStaff/agent-audit-trail (上传后可用)
+
+================================================================================
+验证清单 / Verification Checklist
+================================================================================
+
+上传前 / Before Upload:
+  ✅ 文件夹只包含2个文件 (skill.md + readme.md)
+  ✅ 两个文件都是中英双语
+  ✅ Markdown格式正确
+  ✅ 代码示例完整
+  ✅ 所有链接有效
+
+上传后 / After Upload:
+  [ ] Skill页面显示正确
+  [ ] 文档渲染正常
+  [ ] 安装命令工作
+  [ ] 代码高亮正常
+
+================================================================================
+上传步骤 / Upload Steps
+================================================================================
+
+1. 访问 / Visit: https://clawhub.ai/upload
+
+2. 上传文件 / Upload Files:
+   - skill.md
+   - readme.md
+
+   或上传压缩包 / Or upload zip:
+   - clawhub-upload.zip
+
+3. 填写信息 / Fill Information:
+   - Skill Name: agent-audit-trail
+   - Display Name: Agent Audit Trail
+   - Author: ZhenStaff
+   - Category: AI Tools
+   - Tags: ai-audit, agent-tracking, decision-trail, immutable-log
+
+4. 提交审核 / Submit for Review
+
+================================================================================
+状态 / Status
+================================================================================
+
+✅ 发布就绪评估完成 / Publish readiness assessment complete
+✅ ClawHub上传文件已准备 / ClawHub upload files ready
+✅ 文件已打包 / Files packaged (clawhub-upload.zip)
+✅ 所有平台都已就绪 / All platforms ready
+
+📋 查看完整评估 / View full assessment:
+   PUBLISH_READINESS_ASSESSMENT.md
+
+📋 查看上传详情 / View upload details:
+   CLAWHUB_UPLOAD_READY.md
+
+================================================================================
+支持 / Support
+================================================================================
+
+GitHub Issues: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
+Email:         support@zhenrobotics.com
+
+================================================================================
+Built with transparency in mind. Make AI decisions auditable and trustworthy.
+================================================================================

@@ -1,22 +1,23 @@
 #!/bin/bash
 
-# OpenClaw Video Publisher - 主入口脚本
+# Agent Audit Trail - Main entry script
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+cd "$PROJECT_ROOT"
 
-# 加载环境变量
+# Load environment variables
 if [ -f .env ]; then
   export $(grep -v '^#' .env | xargs)
 fi
 
-# 检查依赖
+# Check dependencies
 if ! command -v node &> /dev/null; then
-  echo "❌ Node.js 未安装"
+  echo "Error: Node.js is not installed"
   exit 1
 fi
 
-# 运行 CLI
+# Run CLI
 npx tsx src/cli/index.ts "$@"

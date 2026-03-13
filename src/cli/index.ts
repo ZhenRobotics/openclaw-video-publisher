@@ -1,197 +1,279 @@
 #!/usr/bin/env node
 
 /**
- * OpenClaw Video Publisher - CLI 入口
+ * Agent Audit Trail - CLI Interface
  */
 
 import { Command } from 'commander';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
-import { VideoPublisher } from '../core/publisher';
-import { VideoFile, VideoMetadata, PublishOptions } from '../core/types';
+import chalk from 'chalk';
+import ora from 'ora';
+import { AgentAuditTrail } from '../core/audit-trail';
+import { AuditConfig } from '../core/types';
 
-// 加载环境变量
+// Load environment variables
 dotenv.config();
 
 const program = new Command();
 
 program
-  .name('video-publish')
-  .description('OpenClaw Video Publisher - 多平台视频发布工具')
+  .name('audit-trail')
+  .description('Agent Audit Trail - The Immutable Black Box for AI Decisions')
   .version('1.0.0');
 
 /**
- * upload 命令 - 上传视频
+ * Initialize command - Create new audit trail
  */
 program
-  .command('upload')
-  .description('上传视频到指定平台')
-  .requiredOption('-v, --video <path>', '视频文件路径')
-  .requiredOption('-t, --title <title>', '视频标题')
-  .option('-d, --description <desc>', '视频描述')
-  .option('--tags <tags>', '标签（逗号分隔）')
-  .option('-c, --cover <path>', '封面图片路径')
-  .option(
-    '-p, --platforms <platforms>',
-    '目标平台（逗号分隔）',
-    process.env.DEFAULT_PLATFORMS || 'douyin,kuaishou'
-  )
-  .option('--retry', '失败时自动重试', process.env.AUTO_RETRY === 'true')
-  .option(
-    '--max-retries <count>',
-    '最大重试次数',
-    process.env.MAX_RETRY || '3'
-  )
+  .command('init')
+  .description('Initialize a new audit trail')
+  .option('-a, --agent-id <id>', 'Agent identifier', process.env.AGENT_ID || 'my-agent')
+  .option('-v, --version <version>', 'Agent version', process.env.AGENT_VERSION || '1.0.0')
+  .option('-s, --storage <path>', 'Storage path', process.env.STORAGE_PATH || './audit-data')
   .action(async (options) => {
+    const spinner = ora('Initializing audit trail...').start();
+
     try {
-      // 读取配置
-      const platformsConfig = loadPlatformsConfig();
-      const credentials = loadCredentials();
-
-      // 创建发布器
-      const publisher = new VideoPublisher(
-        platformsConfig,
-        credentials,
-        process.env.PUBLISH_HISTORY_PATH
-      );
-
-      // 准备视频文件信息
-      const videoFile: VideoFile = {
-        path: options.video,
-        filename: path.basename(options.video),
-        size: fs.statSync(options.video).size,
+      const config: Partial<AuditConfig> = {
+        agentId: options.agentId,
+        agentVersion: options.version,
+        storagePath: options.storage,
+        storageType: 'json',
       };
 
-      // 准备元数据
-      const metadata: VideoMetadata = {
-        title: options.title,
-        description: options.description,
-        tags: options.tags ? options.tags.split(',') : [],
-        cover: options.cover,
-      };
+      const trail = new AgentAuditTrail(config);
+      await trail.initialize();
 
-      // 准备发布选项
-      const publishOptions: PublishOptions = {
-        video: videoFile,
-        metadata,
-        platforms: options.platforms.split(','),
-        retry: options.retry,
-        maxRetries: parseInt(options.maxRetries),
-      };
-
-      console.log('\n🚀 开始发布视频...\n');
-      console.log(`📹 视频: ${videoFile.filename}`);
-      console.log(`📝 标题: ${metadata.title}`);
-      console.log(`🎯 平台: ${publishOptions.platforms.join(', ')}\n`);
-
-      // 执行发布
-      const results = await publisher.publish(publishOptions);
-
-      // 显示结果
-      console.log('\n📊 发布结果:\n');
-      results.forEach((result) => {
-        const status = result.status === 'success' ? '✅' : '❌';
-        console.log(`${status} ${result.platform}:`);
-        if (result.status === 'success') {
-          console.log(`   URL: ${result.url}`);
-          console.log(`   视频ID: ${result.videoId}`);
-        } else {
-          console.log(`   错误: ${result.error}`);
-        }
-        console.log('');
-      });
-
-      const successCount = results.filter((r) => r.status === 'success').length;
-      console.log(`\n✨ 成功: ${successCount}/${results.length}\n`);
+      spinner.succeed(chalk.green('Audit trail initialized successfully!'));
+      console.log(chalk.gray('\nConfiguration:'));
+      console.log(chalk.gray(`  Agent ID: ${config.agentId}`));
+      console.log(chalk.gray(`  Version: ${config.agentVersion}`));
+      console.log(chalk.gray(`  Storage: ${config.storagePath}`));
     } catch (error: any) {
-      console.error(`\n❌ 错误: ${error.message}\n`);
+      spinner.fail(chalk.red('Failed to initialize'));
+      console.error(chalk.red(`\nError: ${error.message}`));
       process.exit(1);
     }
   });
 
 /**
- * list 命令 - 查看发布历史
+ * Record command - Record a decision
+ */
+program
+  .command('record')
+  .description('Record a new decision')
+  .requiredOption('-p, --prompt <text>', 'Input prompt')
+  .requiredOption('-d, --decision <text>', 'Decision made')
+  .option('-r, --reasoning <text>', 'Reasoning behind decision')
+  .option('-a, --agent-id <id>', 'Agent ID', process.env.AGENT_ID || 'my-agent')
+  .option('-s, --storage <path>', 'Storage path', process.env.STORAGE_PATH || './audit-data')
+  .action(async (options) => {
+    const spinner = ora('Recording decision...').start();
+
+    try {
+      const trail = new AgentAuditTrail({
+        agentId: options.agentId,
+        storagePath: options.storage,
+      });
+      await trail.initialize();
+
+      const startTime = Date.now();
+      const entry = await trail.recordSimple(
+        options.prompt,
+        options.decision,
+        options.reasoning || 'No reasoning provided',
+        Date.now() - startTime
+      );
+
+      spinner.succeed(chalk.green('Decision recorded!'));
+      console.log(chalk.gray('\nEntry Details:'));
+      console.log(chalk.gray(`  ID: ${entry.id}`));
+      console.log(chalk.gray(`  Hash: ${entry.hash.substring(0, 16)}...`));
+      console.log(chalk.gray(`  Timestamp: ${new Date(entry.timestamp).toISOString()}`));
+
+      await trail.close();
+    } catch (error: any) {
+      spinner.fail(chalk.red('Failed to record decision'));
+      console.error(chalk.red(`\nError: ${error.message}`));
+      process.exit(1);
+    }
+  });
+
+/**
+ * Verify command - Verify chain integrity
+ */
+program
+  .command('verify')
+  .description('Verify audit trail integrity')
+  .option('-a, --agent-id <id>', 'Agent ID', process.env.AGENT_ID || 'my-agent')
+  .option('-s, --storage <path>', 'Storage path', process.env.STORAGE_PATH || './audit-data')
+  .action(async (options) => {
+    const spinner = ora('Verifying audit trail...').start();
+
+    try {
+      const trail = new AgentAuditTrail({
+        agentId: options.agentId,
+        storagePath: options.storage,
+      });
+      await trail.initialize();
+
+      const result = trail.verify();
+
+      if (result.valid) {
+        spinner.succeed(chalk.green('Audit trail verified successfully!'));
+        console.log(chalk.green('\n✓ Chain integrity intact'));
+        console.log(chalk.gray(`  Total entries: ${result.totalEntries}`));
+        console.log(chalk.gray(`  Verified: ${result.verifiedEntries}`));
+      } else {
+        spinner.fail(chalk.red('Verification failed!'));
+        console.log(chalk.red('\n✗ Chain integrity compromised'));
+        console.log(chalk.red(`  Total entries: ${result.totalEntries}`));
+        console.log(chalk.red(`  Broken links: ${result.brokenLinks.length}`));
+        console.log(chalk.red('\nErrors:'));
+        result.errors.forEach((err) => console.log(chalk.red(`  - ${err}`)));
+      }
+
+      await trail.close();
+      process.exit(result.valid ? 0 : 1);
+    } catch (error: any) {
+      spinner.fail(chalk.red('Verification error'));
+      console.error(chalk.red(`\nError: ${error.message}`));
+      process.exit(1);
+    }
+  });
+
+/**
+ * List command - List all decisions
  */
 program
   .command('list')
-  .description('查看发布历史')
-  .action(() => {
+  .description('List all recorded decisions')
+  .option('-a, --agent-id <id>', 'Agent ID', process.env.AGENT_ID || 'my-agent')
+  .option('-s, --storage <path>', 'Storage path', process.env.STORAGE_PATH || './audit-data')
+  .option('-l, --limit <number>', 'Limit results', '10')
+  .option('--start <timestamp>', 'Start time (Unix timestamp)')
+  .option('--end <timestamp>', 'End time (Unix timestamp)')
+  .action(async (options) => {
     try {
-      const platformsConfig = loadPlatformsConfig();
-      const credentials = loadCredentials();
-      const publisher = new VideoPublisher(
-        platformsConfig,
-        credentials,
-        process.env.PUBLISH_HISTORY_PATH
-      );
+      const trail = new AgentAuditTrail({
+        agentId: options.agentId,
+        storagePath: options.storage,
+      });
+      await trail.initialize();
 
-      const history = publisher.getHistory();
-      console.log('\n📜 发布历史:\n');
-      console.log(JSON.stringify(history, null, 2));
+      const entries = await trail.query({
+        limit: parseInt(options.limit),
+        startTime: options.start ? parseInt(options.start) : undefined,
+        endTime: options.end ? parseInt(options.end) : undefined,
+      });
+
+      console.log(chalk.blue(`\nAudit Trail Entries (${entries.length}):\n`));
+
+      if (entries.length === 0) {
+        console.log(chalk.gray('No entries found.'));
+      } else {
+        entries.forEach((entry, index) => {
+          console.log(chalk.white(`${index + 1}. Entry ${entry.id}`));
+          console.log(chalk.gray(`   Timestamp: ${new Date(entry.timestamp).toISOString()}`));
+          console.log(chalk.gray(`   Input: ${entry.input.prompt || 'N/A'}`));
+          console.log(chalk.gray(`   Decision: ${entry.output.decision}`));
+          console.log(chalk.gray(`   Hash: ${entry.hash.substring(0, 16)}...`));
+          console.log('');
+        });
+      }
+
+      await trail.close();
     } catch (error: any) {
-      console.error(`\n❌ 错误: ${error.message}\n`);
+      console.error(chalk.red(`\nError: ${error.message}`));
       process.exit(1);
     }
   });
 
 /**
- * platforms 命令 - 查看可用平台
+ * Export command - Export audit trail
  */
 program
-  .command('platforms')
-  .description('查看可用平台')
-  .action(() => {
-    try {
-      const platformsConfig = loadPlatformsConfig();
-      const credentials = loadCredentials();
-      const publisher = new VideoPublisher(
-        platformsConfig,
-        credentials
-      );
+  .command('export')
+  .description('Export audit trail to file')
+  .requiredOption('-o, --output <file>', 'Output file path')
+  .option('-f, --format <format>', 'Export format (json|csv|html|markdown)', 'json')
+  .option('-a, --agent-id <id>', 'Agent ID', process.env.AGENT_ID || 'my-agent')
+  .option('-s, --storage <path>', 'Storage path', process.env.STORAGE_PATH || './audit-data')
+  .option('--include-reasoning', 'Include reasoning steps', false)
+  .action(async (options) => {
+    const spinner = ora('Exporting audit trail...').start();
 
-      const platforms = publisher.getAvailablePlatforms();
-      console.log('\n🌍 可用平台:\n');
-      platforms.forEach((platform) => {
-        console.log(`  ✅ ${platform}`);
+    try {
+      const trail = new AgentAuditTrail({
+        agentId: options.agentId,
+        storagePath: options.storage,
       });
-      console.log('');
+      await trail.initialize();
+
+      const exportData = await trail.export({
+        format: options.format,
+        includeMetadata: true,
+        includeReasoning: options.includeReasoning,
+      });
+
+      // Write to file
+      fs.writeFileSync(options.output, exportData);
+
+      spinner.succeed(chalk.green('Export completed!'));
+      console.log(chalk.gray(`\nExported to: ${options.output}`));
+      console.log(chalk.gray(`Format: ${options.format}`));
+
+      await trail.close();
     } catch (error: any) {
-      console.error(`\n❌ 错误: ${error.message}\n`);
+      spinner.fail(chalk.red('Export failed'));
+      console.error(chalk.red(`\nError: ${error.message}`));
       process.exit(1);
     }
   });
 
 /**
- * 加载平台配置
+ * Info command - Show audit trail information
  */
-function loadPlatformsConfig(): any {
-  const configPath = path.join(process.cwd(), 'config', 'platforms.json');
-  if (!fs.existsSync(configPath)) {
-    console.error('❌ 配置文件不存在: config/platforms.json');
-    console.log('💡 提示: cp config/platforms.example.json config/platforms.json');
-    process.exit(1);
-  }
-  return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-}
+program
+  .command('info')
+  .description('Show audit trail information')
+  .option('-a, --agent-id <id>', 'Agent ID', process.env.AGENT_ID || 'my-agent')
+  .option('-s, --storage <path>', 'Storage path', process.env.STORAGE_PATH || './audit-data')
+  .action(async (options) => {
+    try {
+      const trail = new AgentAuditTrail({
+        agentId: options.agentId,
+        storagePath: options.storage,
+      });
+      await trail.initialize();
 
-/**
- * 加载平台凭证
- */
-function loadCredentials(): any {
-  return {
-    douyin: {
-      client_key: process.env.DOUYIN_CLIENT_KEY,
-      client_secret: process.env.DOUYIN_CLIENT_SECRET,
-      access_token: process.env.DOUYIN_ACCESS_TOKEN,
-    },
-    kuaishou: {
-      app_id: process.env.KUAISHOU_APP_ID,
-      app_secret: process.env.KUAISHOU_APP_SECRET,
-      access_token: process.env.KUAISHOU_ACCESS_TOKEN,
-    },
-    // TODO: 添加更多平台凭证
-  };
-}
+      const metadata = trail.getMetadata();
+      const verification = trail.verify();
+
+      console.log(chalk.blue('\nAudit Trail Information:\n'));
+      console.log(chalk.white('Chain Metadata:'));
+      console.log(chalk.gray(`  Chain ID: ${metadata.chainId}`));
+      console.log(chalk.gray(`  Agent ID: ${metadata.agentId}`));
+      console.log(chalk.gray(`  Total Entries: ${metadata.totalEntries}`));
+      console.log(chalk.gray(`  Created: ${new Date(metadata.createdAt).toISOString()}`));
+      console.log(chalk.gray(`  Last Updated: ${new Date(metadata.lastUpdatedAt).toISOString()}`));
+      console.log(chalk.gray(`  Genesis Hash: ${metadata.genesisHash.substring(0, 16)}...`));
+      console.log(chalk.gray(`  Latest Hash: ${metadata.latestHash.substring(0, 16)}...`));
+
+      console.log(chalk.white('\nVerification:'));
+      if (verification.valid) {
+        console.log(chalk.green(`  ✓ Valid (${verification.verifiedEntries}/${verification.totalEntries} entries)`));
+      } else {
+        console.log(chalk.red(`  ✗ Invalid (${verification.brokenLinks.length} broken links)`));
+      }
+
+      await trail.close();
+    } catch (error: any) {
+      console.error(chalk.red(`\nError: ${error.message}`));
+      process.exit(1);
+    }
+  });
 
 program.parse();

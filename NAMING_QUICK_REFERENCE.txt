@@ -1,0 +1,98 @@
+项目命名快速参考 - Agent Audit Trail
+====================================
+
+正式命名（跨平台统一）
+--------------------
+
+显示名称:    Agent Audit Trail
+标语:        The Immutable Black Box for AI Decisions
+
+
+NPM 包名
+--------
+
+包名:        agent-audit-trail
+状态:        可用（已验证）
+版本:        1.0.0
+
+安装:
+  npm install -g agent-audit-trail
+  npm install agent-audit-trail
+
+导入:
+  import { AgentAuditTrail } from 'agent-audit-trail';
+
+
+GitHub 仓库
+-----------
+
+组织:        ZhenRobotics
+仓库名:      agent-audit-trail
+完整路径:    ZhenRobotics/agent-audit-trail
+URL:         https://github.com/ZhenRobotics/agent-audit-trail
+
+克隆:
+  git clone https://github.com/ZhenRobotics/agent-audit-trail.git
+
+
+ClawHub Skill
+-------------
+
+Skill Name:  agent-audit-trail
+作者:        ZhenStaff
+完整 ID:     ZhenStaff/agent-audit-trail
+分类:        AI Tools
+URL:         https://clawhub.ai/ZhenStaff/agent-audit-trail
+
+安装:
+  clawhub install agent-audit-trail
+
+
+CLI 命令
+--------
+
+主命令:      audit-trail
+别名:        aat
+
+使用示例:
+  audit-trail init --agent-id my-agent
+  audit-trail record --prompt "..." --decision "..."
+  audit-trail verify
+  aat init
+
+
+命名规范总结
+------------
+
+平台          命名格式                    状态
+NPM           agent-audit-trail           可用
+GitHub        agent-audit-trail           已用
+ClawHub       agent-audit-trail           已配置
+CLI (主)      audit-trail                 已配置
+CLI (别名)    aat                         已配置
+显示名称      Agent Audit Trail           统一
+TypeScript    AgentAuditTrail (类名)      已实现
+
+
+推荐使用
+--------
+
+引用项目时:
+  - 正式文档/标题: "Agent Audit Trail"
+  - 技术讨论/包名: "agent-audit-trail"
+  - 口头交流/简称: "AAT" 或 "Audit Trail"
+
+安装时:
+  npm install agent-audit-trail
+  npm install -g agent-audit-trail
+  clawhub install agent-audit-trail
+
+使用时:
+  import { AgentAuditTrail } from 'agent-audit-trail';
+  audit-trail <command>
+  aat <command>
+
+
+状态: 命名规范已确定并实施
+更新: 2026-03-13
+版本: 1.0.0
