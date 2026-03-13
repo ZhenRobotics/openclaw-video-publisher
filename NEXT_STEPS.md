@@ -62,7 +62,7 @@ npm whoami
 npm publish --registry=https://registry.npmjs.org/
 
 # 4. 验证成功
-npm view openclaw-agent-audit-trail version
+npm view openclaw-audit-trail version
 # 应显示: 1.0.0
 ```
 
@@ -109,10 +109,10 @@ npm view openclaw-agent-audit-trail version
 ### NPM 发布成功后
 ```bash
 # 检查包
-npm view openclaw-agent-audit-trail
+npm view openclaw-audit-trail
 
 # 全局安装
-npm install -g openclaw-agent-audit-trail
+npm install -g openclaw-audit-trail
 
 # 测试CLI
 audit-trail --version
@@ -125,7 +125,7 @@ aat --version
 clawhub search agent-audit-trail
 
 # 安装
-clawhub install agent-audit-trail
+clawhub install openclaw-audit-trail
 ```
 
 ---
@@ -147,7 +147,7 @@ clawhub install agent-audit-trail
    ```bash
    cd /home/justin/openclaw-agent-audit-trail
    npm publish --registry=https://registry.npmjs.org/
-   npm view openclaw-agent-audit-trail version
+   npm view openclaw-audit-trail version
    ```
 
 2. **ClawHub 上传** (3 分钟):
@@ -158,9 +158,9 @@ clawhub install agent-audit-trail
 
 3. **验证** (2 分钟):
    ```bash
-   npm install -g openclaw-agent-audit-trail
+   npm install -g openclaw-audit-trail
    audit-trail --version
-   clawhub install agent-audit-trail
+   clawhub install openclaw-audit-trail
    ```
 
 **总时间**: 约 10 分钟
@@ -185,7 +185,7 @@ clawhub install agent-audit-trail
 
 - **GitHub Release**: https://github.com/ZhenRobotics/openclaw-video-publisher/releases/tag/v1.0.0
 - **ClawHub Upload**: https://clawhub.ai/upload
-- **NPM (发布后)**: https://www.npmjs.com/package/openclaw-agent-audit-trail
+- **NPM (发布后)**: https://www.npmjs.com/package/openclaw-audit-trail
 
 ---
 

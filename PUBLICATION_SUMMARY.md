@@ -1,6 +1,6 @@
 # 发布执行总结 / Publication Execution Summary
 
-**项目**: Agent Audit Trail (openclaw-agent-audit-trail)
+**项目**: Agent Audit Trail (openclaw-audit-trail)
 **版本**: 1.0.0
 **日期**: 2026-03-13
 
@@ -71,14 +71,14 @@ Could not publish, as user undefined: rate limited exceeded
 
 **包信息 / Package Info**:
 ```
-Package: openclaw-agent-audit-trail@1.0.0
+Package: openclaw-audit-trail@1.0.0
 Size: 18.5 KB (unpacked: 72.3 kB)
 Files: 14
 Registry: https://registry.npmjs.org/
 ```
 
 **预期 URL** (发布后可用):
-https://www.npmjs.com/package/openclaw-agent-audit-trail
+https://www.npmjs.com/package/openclaw-audit-trail
 
 ---
 
@@ -136,7 +136,7 @@ https://clawhub.ai/ZhenStaff/agent-audit-trail
 | 平台 | 状态 | URL |
 |------|------|-----|
 | **GitHub** | ✅ 已完成 | https://github.com/ZhenRobotics/openclaw-video-publisher/releases/tag/v1.0.0 |
-| **NPM** | ⏳ 重试中 | https://www.npmjs.com/package/openclaw-agent-audit-trail (即将可用) |
+| **NPM** | ⏳ 重试中 | https://www.npmjs.com/package/openclaw-audit-trail (即将可用) |
 | **ClawHub** | 📋 待手动操作 | 文件已准备在 `openclaw-skill/` |
 
 ---
@@ -147,7 +147,7 @@ https://clawhub.ai/ZhenStaff/agent-audit-trail
 
 1. **等待 NPM 发布完成 / Wait for NPM Publication**
    - 正在重试中，预计1-2分钟完成
-   - 完成后验证: `npm view openclaw-agent-audit-trail version`
+   - 完成后验证: `npm view openclaw-audit-trail version`
 
 2. **执行 ClawHub 手动上传 / Execute ClawHub Manual Upload**
    - 访问: https://clawhub.ai/upload
@@ -159,10 +159,10 @@ https://clawhub.ai/ZhenStaff/agent-audit-trail
 #### NPM 验证 / NPM Verification
 ```bash
 # 检查包是否可用 / Check if package is available
-npm view openclaw-agent-audit-trail
+npm view openclaw-audit-trail
 
 # 全局安装测试 / Test global installation
-npm install -g openclaw-agent-audit-trail
+npm install -g openclaw-audit-trail
 
 # 验证CLI / Verify CLI
 audit-trail --version
@@ -187,7 +187,7 @@ clawhub search agent-audit-trail
 clawhub inspect agent-audit-trail
 
 # 安装测试 / Test installation
-clawhub install agent-audit-trail
+clawhub install openclaw-audit-trail
 ```
 
 ---
@@ -214,13 +214,13 @@ clawhub install agent-audit-trail
 - **GitHub Release v1.0.0**: https://github.com/ZhenRobotics/openclaw-video-publisher/releases/tag/v1.0.0
 
 ### 即将可用 / Coming Soon
-- **NPM Package**: https://www.npmjs.com/package/openclaw-agent-audit-trail (发布中...)
+- **NPM Package**: https://www.npmjs.com/package/openclaw-audit-trail (发布中...)
 - **ClawHub Skill**: https://clawhub.ai/ZhenStaff/agent-audit-trail (待上传)
 
 ### 支持和文档 / Support & Documentation
-- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
-- **Documentation**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail#readme
-- **Quick Start**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/blob/main/QUICKSTART.md
+- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-audit-trail/issues
+- **Documentation**: https://github.com/ZhenRobotics/openclaw-audit-trail#readme
+- **Quick Start**: https://github.com/ZhenRobotics/openclaw-audit-trail/blob/main/QUICKSTART.md
 
 ---
 
@@ -291,14 +291,14 @@ clawhub install agent-audit-trail
 ## 📋 完成后检查清单 / Post-Publication Checklist
 
 ### NPM 发布完成后 / After NPM Publication
-- [ ] 访问 https://www.npmjs.com/package/openclaw-agent-audit-trail
-- [ ] 测试全局安装: `npm install -g openclaw-agent-audit-trail`
+- [ ] 访问 https://www.npmjs.com/package/openclaw-audit-trail
+- [ ] 测试全局安装: `npm install -g openclaw-audit-trail`
 - [ ] 验证CLI工作: `audit-trail --version`
-- [ ] 验证导入: `import { AgentAuditTrail } from 'openclaw-agent-audit-trail'`
+- [ ] 验证导入: `import { AgentAuditTrail } from 'openclaw-audit-trail'`
 
 ### ClawHub 上传完成后 / After ClawHub Upload
 - [ ] 访问 https://clawhub.ai/ZhenStaff/agent-audit-trail
-- [ ] 测试安装: `clawhub install agent-audit-trail`
+- [ ] 测试安装: `clawhub install openclaw-audit-trail`
 - [ ] 验证文档显示正确
 - [ ] 确认版本号为 1.0.0
 
@@ -314,7 +314,7 @@ clawhub install agent-audit-trail
 如遇问题，请联系:
 If you encounter issues, please contact:
 
-- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
+- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-audit-trail/issues
 - **Email**: support@zhenrobotics.com
 
 ---

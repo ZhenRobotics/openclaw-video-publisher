@@ -1,6 +1,6 @@
 # 最终发布状态报告 / Final Publication Status Report
 
-**项目**: Agent Audit Trail (openclaw-agent-audit-trail)
+**项目**: Agent Audit Trail (openclaw-audit-trail)
 **版本**: 1.0.0
 **日期**: 2026-03-13
 **时间**: 19:20 CST
@@ -93,7 +93,7 @@ Solution: 需要等待 30-60 分钟后手动执行发布命令
 
 **包信息**:
 ```
-Package Name: openclaw-agent-audit-trail
+Package Name: openclaw-audit-trail
 Version: 1.0.0
 Size: 18.5 KB (unpacked: 72.3 kB)
 Files: 14
@@ -122,14 +122,14 @@ Status: 已打包，待发布
 
 5. **验证成功**:
    ```bash
-   npm view openclaw-agent-audit-trail version
+   npm view openclaw-audit-trail version
    # 应显示: 1.0.0
    ```
 
 **详细指南**: 查看 `NPM_PUBLISH_MANUAL.md`
 
 **发布后 URL**:
-https://www.npmjs.com/package/openclaw-agent-audit-trail
+https://www.npmjs.com/package/openclaw-audit-trail
 
 ---
 
@@ -203,7 +203,7 @@ https://clawhub.ai/ZhenStaff/agent-audit-trail
 cd /home/justin/openclaw-agent-audit-trail
 npm whoami  # 验证认证
 npm publish --registry=https://registry.npmjs.org/
-npm view openclaw-agent-audit-trail version  # 验证成功
+npm view openclaw-audit-trail version  # 验证成功
 ```
 
 **步骤 3**: **执行 ClawHub 上传** (NPM 发布后)
@@ -214,12 +214,12 @@ npm view openclaw-agent-audit-trail version  # 验证成功
 **步骤 4**: **完成验证** (全部发布后)
 ```bash
 # NPM 验证
-npm install -g openclaw-agent-audit-trail
+npm install -g openclaw-audit-trail
 audit-trail --version
 
 # ClawHub 验证
 clawhub search agent-audit-trail
-clawhub install agent-audit-trail
+clawhub install openclaw-audit-trail
 ```
 
 ---
@@ -248,13 +248,13 @@ clawhub install agent-audit-trail
 - **Git Tag**: v1.0.0
 
 ### 即将发布 / To Be Published
-- **NPM Package**: https://www.npmjs.com/package/openclaw-agent-audit-trail (等待手动发布)
+- **NPM Package**: https://www.npmjs.com/package/openclaw-audit-trail (等待手动发布)
 - **ClawHub Skill**: https://clawhub.ai/ZhenStaff/agent-audit-trail (等待手动上传)
 
 ### 文档和支持 / Documentation & Support
-- **README**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail#readme
-- **Quick Start**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/blob/main/QUICKSTART.md
-- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
+- **README**: https://github.com/ZhenRobotics/openclaw-audit-trail#readme
+- **Quick Start**: https://github.com/ZhenRobotics/openclaw-audit-trail/blob/main/QUICKSTART.md
+- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-audit-trail/issues
 
 ---
 
@@ -278,7 +278,7 @@ clawhub install agent-audit-trail
 
 ### 包配置
 ```
-✓ Package name: openclaw-agent-audit-trail
+✓ Package name: openclaw-audit-trail
 ✓ Version: 1.0.0
 ✓ License: MIT
 ✓ Keywords: 10个相关标签
@@ -322,8 +322,8 @@ clawhub install agent-audit-trail
 
 ### 全部完成后应达到
 - [ ] GitHub Release v1.0.0 可访问 ✅
-- [ ] NPM 包可通过 `npm install -g openclaw-agent-audit-trail` 安装
-- [ ] ClawHub skill 可通过 `clawhub install agent-audit-trail` 安装
+- [ ] NPM 包可通过 `npm install -g openclaw-audit-trail` 安装
+- [ ] ClawHub skill 可通过 `clawhub install openclaw-audit-trail` 安装
 - [ ] 所有文档链接有效
 - [ ] CLI 命令 `audit-trail` 和 `aat` 工作正常
 
@@ -337,7 +337,7 @@ clawhub install agent-audit-trail
 - `PUBLICATION_SUMMARY.md` - 完整的发布总结
 
 ### 联系方式
-- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
+- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-audit-trail/issues
 - **Email**: support@zhenrobotics.com
 
 ---

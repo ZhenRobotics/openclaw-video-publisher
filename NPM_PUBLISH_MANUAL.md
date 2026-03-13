@@ -1,6 +1,6 @@
 # NPM 手动发布指南 / NPM Manual Publication Guide
 
-**项目**: openclaw-agent-audit-trail
+**项目**: openclaw-audit-trail
 **版本**: 1.0.0
 **状态**: 需要手动发布 (频率限制)
 
@@ -32,7 +32,7 @@ Could not publish, as user undefined: rate limited exceeded
 
 ### 包信息 / Package Info
 ```
-Package Name: openclaw-agent-audit-trail
+Package Name: openclaw-audit-trail
 Version: 1.0.0
 Size: 18.5 KB (unpacked: 72.3 kB)
 Files: 14
@@ -53,7 +53,7 @@ Registry: https://registry.npmjs.org/
 
 ### 配置验证 / Configuration Verified
 ```
-✓ package.json name: openclaw-agent-audit-trail
+✓ package.json name: openclaw-audit-trail
 ✓ package.json version: 1.0.0
 ✓ bin commands: audit-trail, aat
 ✓ files: 正确配置
@@ -107,19 +107,19 @@ npm publish --registry=https://registry.npmjs.org/ --verbose
 
 ### 1. 检查包是否可用
 ```bash
-npm view openclaw-agent-audit-trail
+npm view openclaw-audit-trail
 ```
 
 **预期输出**:
 ```
-openclaw-agent-audit-trail@1.0.0 | MIT | deps: 4 | versions: 1
+openclaw-audit-trail@1.0.0 | MIT | deps: 4 | versions: 1
 The Immutable Black Box for AI Decisions
-https://github.com/ZhenRobotics/openclaw-agent-audit-trail
+https://github.com/ZhenRobotics/openclaw-audit-trail
 ```
 
 ### 2. 检查版本
 ```bash
-npm view openclaw-agent-audit-trail version
+npm view openclaw-audit-trail version
 ```
 
 **预期输出**:
@@ -129,13 +129,13 @@ npm view openclaw-agent-audit-trail version
 
 ### 3. 检查包信息
 ```bash
-npm info openclaw-agent-audit-trail
+npm info openclaw-audit-trail
 ```
 
 ### 4. 测试安装
 ```bash
 # 全局安装测试
-npm install -g openclaw-agent-audit-trail
+npm install -g openclaw-audit-trail
 
 # 验证CLI
 audit-trail --version
@@ -146,7 +146,7 @@ aat --version
 ```bash
 # 创建测试文件
 cat > test-import.js << 'EOF'
-const { AgentAuditTrail } = require('openclaw-agent-audit-trail');
+const { AgentAuditTrail } = require('openclaw-audit-trail');
 console.log('Import successful:', typeof AgentAuditTrail);
 EOF
 
@@ -185,7 +185,7 @@ npm config set //registry.npmjs.org/:_authToken npm_YOUR_NPM_TOKEN_HERE
 
 **检查**:
 ```bash
-npm view openclaw-agent-audit-trail
+npm view openclaw-audit-trail
 
 # 如果显示404，说明包名可用
 # 如果显示包信息，说明已发布成功
@@ -226,7 +226,7 @@ npm publish
 - **GitHub Repo**: https://github.com/ZhenRobotics/openclaw-video-publisher
 
 ### 待发布 / To Be Published
-- **NPM Package**: https://www.npmjs.com/package/openclaw-agent-audit-trail (发布后可用)
+- **NPM Package**: https://www.npmjs.com/package/openclaw-audit-trail (发布后可用)
 
 ---
 
@@ -264,8 +264,8 @@ npm publish
 - [ ] 看到 "Published" 成功消息
 
 ### 发布后 / After Publishing
-- [ ] 验证: `npm view openclaw-agent-audit-trail`
-- [ ] 测试安装: `npm install -g openclaw-agent-audit-trail`
+- [ ] 验证: `npm view openclaw-audit-trail`
+- [ ] 测试安装: `npm install -g openclaw-audit-trail`
 - [ ] 验证CLI: `audit-trail --version`
 - [ ] 更新 PUBLICATION_SUMMARY.md 状态
 
@@ -276,7 +276,7 @@ npm publish
 如果持续遇到问题:
 - 检查 npm 状态页: https://status.npmjs.org/
 - 查看 npm 文档: https://docs.npmjs.com/cli/publish
-- GitHub Issues: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
+- GitHub Issues: https://github.com/ZhenRobotics/openclaw-audit-trail/issues
 
 ---
 

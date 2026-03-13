@@ -44,23 +44,23 @@ Track, audit, and verify AI agent decisions with cryptographic guarantees for AI
 
 ### NPM (Global)
 ```bash
-npm install -g openclaw-agent-audit-trail
+npm install -g openclaw-audit-trail
 ```
 
 ### NPM (Project Dependency)
 ```bash
-npm install openclaw-agent-audit-trail
+npm install openclaw-audit-trail
 ```
 
 ### ClawHub
 ```bash
-clawhub install agent-audit-trail
+clawhub install openclaw-audit-trail
 ```
 
 ### From Source
 ```bash
-git clone https://github.com/ZhenRobotics/openclaw-agent-audit-trail.git
-cd openclaw-agent-audit-trail
+git clone https://github.com/ZhenRobotics/openclaw-audit-trail.git
+cd openclaw-audit-trail
 npm install
 npm link
 ```
@@ -97,7 +97,7 @@ audit-trail export --output audit-report.html --format html
 ## 💻 Programmatic Usage
 
 ```typescript
-import { AgentAuditTrail } from 'openclaw-agent-audit-trail';
+import { AgentAuditTrail } from 'openclaw-audit-trail';
 
 const trail = new AgentAuditTrail({
   agentId: 'my-ai-agent',
@@ -197,10 +197,10 @@ npm test
 
 ## 🔗 Links
 
-- **GitHub**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail
-- **NPM**: https://www.npmjs.com/package/openclaw-agent-audit-trail
+- **GitHub**: https://github.com/ZhenRobotics/openclaw-audit-trail
+- **NPM**: https://www.npmjs.com/package/openclaw-audit-trail
 - **ClawHub**: https://clawhub.ai/ZhenStaff/agent-audit-trail
-- **Issues**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
+- **Issues**: https://github.com/ZhenRobotics/openclaw-audit-trail/issues
 
 ---
 
