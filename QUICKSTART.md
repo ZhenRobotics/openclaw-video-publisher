@@ -9,8 +9,8 @@
 ### Option 1: Clone Repository
 
 ```bash
-git clone https://github.com/ZhenRobotics/openclaw-agent-audit-trail.git
-cd openclaw-agent-audit-trail
+git clone https://github.com/ZhenRobotics/openclaw-audit-trail.git
+cd openclaw-audit-trail
 npm install
 npm link  # Make CLI globally available
 ```
@@ -18,7 +18,7 @@ npm link  # Make CLI globally available
 ### Option 2: NPM (Coming Soon)
 
 ```bash
-npm install -g agent-audit-trail
+npm install -g openclaw-audit-trail
 ```
 
 ---
@@ -496,7 +496,7 @@ audit-trail verify --agent-id my-agent
 **Solution**: Link the package
 
 ```bash
-cd openclaw-agent-audit-trail
+cd openclaw-audit-trail
 npm link
 ```
 

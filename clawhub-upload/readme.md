@@ -58,14 +58,14 @@ Track, audit, and verify AI agent decisions with cryptographic guarantees.
 
 ```bash
 # NPM安装 / Install via NPM
-npm install -g openclaw-agent-audit-trail
+npm install -g openclaw-audit-trail
 
 # ClawHub安装 / Install via ClawHub
-clawhub install agent-audit-trail
+clawhub install openclaw-audit-trail
 
 # 从源码 / From source
-git clone https://github.com/ZhenRobotics/openclaw-agent-audit-trail.git
-cd openclaw-agent-audit-trail
+git clone https://github.com/ZhenRobotics/openclaw-audit-trail.git
+cd openclaw-audit-trail
 npm install
 npm link
 ```
@@ -139,7 +139,7 @@ audit-trail export --output audit-data.csv --format csv
 ### TypeScript/JavaScript
 
 ```typescript
-import { AgentAuditTrail } from 'openclaw-agent-audit-trail';
+import { AgentAuditTrail } from 'openclaw-audit-trail';
 
 // 初始化 / Initialize
 const trail = new AgentAuditTrail({
@@ -526,8 +526,8 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 📞 支持 / Support
 
-- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
-- **文档 / Documentation**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/wiki
+- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-audit-trail/issues
+- **文档 / Documentation**: https://github.com/ZhenRobotics/openclaw-audit-trail/wiki
 - **Email**: support@zhenrobotics.com
 
 ---
@@ -570,9 +570,9 @@ MIT license, community-driven development.
 **以透明为理念构建。让AI决策可审计、可信任。**
 **Built with transparency in mind. Make AI decisions auditable and trustworthy.**
 
-🔗 GitHub: https://github.com/ZhenRobotics/openclaw-agent-audit-trail
-📦 NPM: https://www.npmjs.com/package/openclaw-agent-audit-trail
-🦅 ClawHub: https://clawhub.ai/ZhenStaff/agent-audit-trail
+🔗 GitHub: https://github.com/ZhenRobotics/openclaw-audit-trail
+📦 NPM: https://www.npmjs.com/package/openclaw-audit-trail
+🦅 ClawHub: https://clawhub.ai/ZhenStaff/openclaw-audit-trail
 
 ---
 

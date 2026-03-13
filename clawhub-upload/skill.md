@@ -52,22 +52,22 @@ This tool does **NOT** depend on any external APIs or services. All data is stor
 #### 通过 NPM (推荐 / Recommended)
 ```bash
 # 全局安装 / Install globally
-npm install -g openclaw-agent-audit-trail
+npm install -g openclaw-audit-trail
 
 # 或项目依赖 / Or as project dependency
-npm install openclaw-agent-audit-trail
+npm install openclaw-audit-trail
 ```
 
 #### 通过 ClawHub
 ```bash
 # ClawHub安装 / Install via ClawHub
-clawhub install agent-audit-trail
+clawhub install openclaw-audit-trail
 ```
 
 #### 从源码 / From Source
 ```bash
-git clone https://github.com/ZhenRobotics/openclaw-agent-audit-trail.git
-cd openclaw-agent-audit-trail
+git clone https://github.com/ZhenRobotics/openclaw-audit-trail.git
+cd openclaw-audit-trail
 npm install
 npm link
 ```
@@ -149,7 +149,7 @@ Agent: 记录审核输入、分析过程、审核结果
 #### TypeScript Agent 示例 / TypeScript Example
 
 ```typescript
-import { AgentAuditTrail } from 'openclaw-agent-audit-trail';
+import { AgentAuditTrail } from 'openclaw-audit-trail';
 
 // 初始化 / Initialize
 const trail = new AgentAuditTrail({
@@ -412,7 +412,7 @@ audit-trail export \
 ## 📁 项目结构 / Project Structure
 
 ```
-openclaw-agent-audit-trail/
+openclaw-audit-trail/
 ├── bin/
 │   └── audit-trail.sh         # CLI 入口 / CLI entry point
 ├── src/
@@ -442,11 +442,11 @@ openclaw-agent-audit-trail/
 
 ## 🔗 相关资源 / Related Resources
 
-- **GitHub仓库 / Repository**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail
-- **npm包 / Package**: https://www.npmjs.com/package/openclaw-agent-audit-trail
-- **问题反馈 / Issues**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
-- **完整文档 / Documentation**: [README.md](https://github.com/ZhenRobotics/openclaw-agent-audit-trail#readme)
-- **快速开始 / Quick Start**: [QUICKSTART.md](https://github.com/ZhenRobotics/openclaw-agent-audit-trail/blob/main/QUICKSTART.md)
+- **GitHub仓库 / Repository**: https://github.com/ZhenRobotics/openclaw-audit-trail
+- **npm包 / Package**: https://www.npmjs.com/package/openclaw-audit-trail
+- **问题反馈 / Issues**: https://github.com/ZhenRobotics/openclaw-audit-trail/issues
+- **完整文档 / Documentation**: [README.md](https://github.com/ZhenRobotics/openclaw-audit-trail#readme)
+- **快速开始 / Quick Start**: [QUICKSTART.md](https://github.com/ZhenRobotics/openclaw-audit-trail/blob/main/QUICKSTART.md)
 
 ---
 
@@ -456,7 +456,7 @@ openclaw-agent-audit-trail/
 - **最后更新 / Last Updated**: 2026-03-13
 - **作者 / Author**: ZhenStaff
 - **许可证 / License**: MIT
-- **验证仓库 / Repository**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail
+- **验证仓库 / Repository**: https://github.com/ZhenRobotics/openclaw-audit-trail
 - **测试状态 / Test Status**: ✅ 25/25 tests passing
 
 ---

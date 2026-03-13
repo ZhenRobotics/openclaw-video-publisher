@@ -52,8 +52,8 @@ Agent Audit Trail provides an immutable, tamper-proof record of AI decision-maki
 
 ```bash
 # Clone the repository
-git clone https://github.com/ZhenRobotics/openclaw-agent-audit-trail.git
-cd openclaw-agent-audit-trail
+git clone https://github.com/ZhenRobotics/openclaw-audit-trail.git
+cd openclaw-audit-trail
 
 # Install dependencies
 npm install
@@ -145,7 +145,7 @@ audit-trail info
 ### TypeScript/JavaScript
 
 ```typescript
-import { AgentAuditTrail } from 'openclaw-agent-audit-trail';
+import { AgentAuditTrail } from 'openclaw-audit-trail';
 
 // Initialize
 const trail = new AgentAuditTrail({
@@ -526,8 +526,8 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Support
 
-- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/issues
-- **Documentation**: https://github.com/ZhenRobotics/openclaw-agent-audit-trail/wiki
+- **GitHub Issues**: https://github.com/ZhenRobotics/openclaw-audit-trail/issues
+- **Documentation**: https://github.com/ZhenRobotics/openclaw-audit-trail/wiki
 - **Email**: support@zhenrobotics.com
 
 ---
